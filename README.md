@@ -1,4 +1,4 @@
-# Atention
+# Attention
 
 I am working on this outdated version because I haven't adapt to [retroarch](https://github.com/libretro/RetroArch), and therefore, to none of those retroarch oriented projects like [retropie](https://retropie.org.uk/), [recalbox](https://www.recalbox.com), [batocera](https://batocera.org/), etc. However, if you are not crazy, you will check these amazing projects (and their forks of emulationstation) before trying anything else.
 

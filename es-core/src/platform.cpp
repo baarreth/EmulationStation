@@ -44,7 +44,7 @@ int runShutdownCommand()
 #ifdef WIN32 // windows
 	return system("shutdown -s -t 0");
 #else // osx / linux
-	return system("sudo shutdown -h now");
+	return system("systemctl poweroff || shutdown -h now");
 #endif
 }
 
@@ -53,7 +53,16 @@ int runRestartCommand()
 #ifdef WIN32 // windows
 	return system("shutdown -r -t 0");
 #else // osx / linux
-	return system("sudo shutdown -r now");
+	return system("systemctl reboot || shutdown -r now");
+#endif
+}
+
+int runRebootOverclock()
+{
+#ifdef WIN32 // windows
+	return 1;  // do nothing
+#else // osx / linux
+	return system("reboot_overclock");
 #endif
 }
 

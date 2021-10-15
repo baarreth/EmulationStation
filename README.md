@@ -4,6 +4,21 @@ I am working on this outdated version because I haven't adapt to [retroarch](htt
 
 -------------------------------------------
 
+# Improvements
+
+- Bluetooth support (linux only)
+- Extra buttons in input config
+- Verify controllers by deviceGUID and deviceName at the same time
+- Tool to reboot in overclock in Raspberry Pi 4B
+- Reboot/Shutdown without sudo
+
+# TODO
+
+- Remove all Windows support -- seriously... if you are a Windows user, go use [LaunchBox] (https://www.launchbox-app.com/)
+- Fix (or remove) Scraper system -- tbh, I don't like it.... I only kept it for legacy reasons.
+
+-------------------------------------------
+
 EmulationStation
 ================
 

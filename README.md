@@ -1,3 +1,5 @@
+<img src=https://raw.githubusercontent.com/baarreth/EmulationStation/5307f6af9b9df8cd5fa345b14ed3868291f74c94/logo_es.png />
+
 # Attention
 
 I am working on this outdated version because I haven't adapt to [retroarch](https://github.com/libretro/RetroArch), and therefore, to none of those retroarch oriented projects like [retropie](https://retropie.org.uk/), [recalbox](https://www.recalbox.com), [batocera](https://batocera.org/), etc. However, if you are not crazy, you will check these amazing projects (and their forks of emulationstation) before trying anything else.
@@ -14,7 +16,7 @@ I am working on this outdated version because I haven't adapt to [retroarch](htt
 
 # TODO
 
-- Remove all Windows support -- seriously... if you are a Windows user, go use [LaunchBox] (https://www.launchbox-app.com/)
+- Remove all Windows support -- seriously... if you are a Windows user, go use [LaunchBox](https://www.launchbox-app.com/)
 - Fix (or remove) Scraper system -- tbh, I don't like it.... I only kept it for legacy reasons.
 
 -------------------------------------------

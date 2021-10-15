@@ -26,6 +26,7 @@ private:
 	std::shared_ptr<TextComponent> mTitle;
 	std::shared_ptr<TextComponent> mMsg1;
 	std::shared_ptr<TextComponent> mMsg2;
+	std::shared_ptr<TextComponent> mMsg3;
 	std::shared_ptr<TextComponent> mDeviceInfo;
 	std::shared_ptr<TextComponent> mDeviceHeld;
 

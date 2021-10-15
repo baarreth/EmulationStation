@@ -9,12 +9,12 @@
 #include <sstream>
 #include "Util.h"
 
-#define HOLD_TIME 1000
+#define HOLD_TIME 500
 
 using namespace Eigen;
 
 GuiDetectDevice::GuiDetectDevice(Window* window, bool firstRun, const std::function<void()>& doneCallback) : GuiComponent(window), mFirstRun(firstRun), 
-	mBackground(window, ":/frame.png"), mGrid(window, Vector2i(1, 5))
+	mBackground(window, ":/frame.png"), mGrid(window, Vector2i(1, 6))
 {
 	mHoldingConfig = NULL;
 	mHoldTime = 0;
@@ -43,13 +43,17 @@ GuiDetectDevice::GuiDetectDevice(Window* window, bool firstRun, const std::funct
 	mMsg1 = std::make_shared<TextComponent>(mWindow, "HOLD A BUTTON ON YOUR DEVICE TO CONFIGURE IT.", Font::get(FONT_SIZE_SMALL), 0x777777FF, ALIGN_CENTER);
 	mGrid.setEntry(mMsg1, Vector2i(0, 2), false, true);
 
-	const char* msg2str = firstRun ? "PRESS F4 TO QUIT AT ANY TIME." : "PRESS ESC TO CANCEL.";
+	const char* msg2str = firstRun ? "PRESS F4 TO QUIT AT ANY TIME." : "PRESS ESC OR START BUTTON TO CANCEL.";
 	mMsg2 = std::make_shared<TextComponent>(mWindow, msg2str, Font::get(FONT_SIZE_SMALL), 0x777777FF, ALIGN_CENTER);
 	mGrid.setEntry(mMsg2, Vector2i(0, 3), false, true);
 
+    const char* expstr = "The emulator scripts will guess your controller design based on this configuration.\nThe attached USB ports define the player's joysticks sequence. To swap controllers, just swap the USB ports.\nAll connected controllers should be configured or disconnected.";
+	mMsg3 = std::make_shared<TextComponent>(mWindow, expstr, Font::get(FONT_SIZE_TINY), 0xFF0000FF, ALIGN_CENTER);
+	mGrid.setEntry(mMsg3, Vector2i(0, 4), false, true);
+
 	// currently held device
 	mDeviceHeld = std::make_shared<TextComponent>(mWindow, "", Font::get(FONT_SIZE_MEDIUM), 0xFFFFFFFF, ALIGN_CENTER);
-	mGrid.setEntry(mDeviceHeld, Vector2i(0, 4), false, true);
+	mGrid.setEntry(mDeviceHeld, Vector2i(0, 5), false, true);
 
 	setSize(Renderer::getScreenWidth() * 0.6f, Renderer::getScreenHeight() * 0.5f);
 	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, (Renderer::getScreenHeight() - mSize.y()) / 2);
@@ -73,6 +77,13 @@ bool GuiDetectDevice::input(InputConfig* config, Input input)
 	if(!mFirstRun && input.device == DEVICE_KEYBOARD && input.type == TYPE_KEY && input.value && input.id == SDLK_ESCAPE)
 	{
 		// cancel configuring
+		delete this;
+		return true;
+	}
+
+	// give the opportunity to cancel if device is already configured
+	if(config->isMappedTo("start", input) && input.value != 0)
+	{
 		delete this;
 		return true;
 	}

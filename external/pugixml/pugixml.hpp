@@ -521,6 +521,7 @@ namespace pugi
 		}
 
 		// Find child node by attribute name/value
+		xml_node find_child_by_attribute(const char_t* name, const char_t* attr_name_1, const char_t* attr_value_1, const char_t* attr_name_2, const char_t* attr_value_2) const;
 		xml_node find_child_by_attribute(const char_t* name, const char_t* attr_name, const char_t* attr_value) const;
 		xml_node find_child_by_attribute(const char_t* attr_name, const char_t* attr_value) const;
 

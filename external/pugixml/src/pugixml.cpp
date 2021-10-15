@@ -4499,6 +4499,24 @@ namespace pugi
 		return true;
 	}
 
+	PUGI__FN xml_node xml_node::find_child_by_attribute(const char_t* name_, const char_t* attr_name_1, const char_t* attr_value_1, const char_t* attr_name_2, const char_t* attr_value_2) const
+	{
+		if (!_root) return xml_node();
+		
+		for (xml_node_struct* i = _root->first_child; i; i = i->next_sibling)
+			if (i->name && impl::strequal(name_, i->name))
+			{
+                bool found_1 = false, found_2 = false;
+				for (xml_attribute_struct* a = i->first_attribute; a; a = a->next_attribute) {
+                    if (impl::strequal(attr_name_1, a->name) && impl::strequal(attr_value_1, a->value)) found_1 = true;
+                    if (impl::strequal(attr_name_2, a->name) && impl::strequal(attr_value_2, a->value)) found_2 = true;
+                }
+                if(found_1 && found_2) return xml_node(i);
+			}
+
+		return xml_node();
+	}
+
 	PUGI__FN xml_node xml_node::find_child_by_attribute(const char_t* name_, const char_t* attr_name, const char_t* attr_value) const
 	{
 		if (!_root) return xml_node();

@@ -23,6 +23,7 @@
 
 extern bool system_has_bluetooth;
 extern bool system_has_clear_bt_cache;
+extern bool system_has_reboot_overclock;
 
 GuiMenu::GuiMenu(Window* window) : GuiComponent(window), mMenu(window, "MAIN MENU"), mVersion(window)
 {

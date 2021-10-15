@@ -7,20 +7,28 @@
 #include "components/ButtonComponent.h"
 #include "Util.h"
 
-static const int inputCount = 10;
-static const char* inputName[inputCount] = { "Up", "Down", "Left", "Right", "A", "B", "Start", "Select", "PageUp", "PageDown" };
-static const bool inputSkippable[inputCount] = { false, false, false, false, false, false, false, false, true, true };
-static const char* inputDispName[inputCount] = { "UP", "DOWN", "LEFT", "RIGHT", "A", "B", "START", "SELECT", "PAGE UP", "PAGE DOWN" };
+static const int inputCount = 20;
+static const char* inputName[inputCount] = { "Up", "Down", "Left", "Right", "A", "B", "Start", "Select", "PageUp", "PageDown", "X", "Y", "L2", "R2",
+    "LAUp", "LALeft", "RAUp", "RALeft", "L3", "R3" };
+static const bool inputSkippable[inputCount] = { false, false, false, false, false, false, false, false, true, true, true, true, true, true,
+    true, true, true, true, true, true };
+static const char* inputDispName[inputCount] = { "Hat-UP", "Hat-DOWN", "Hat-LEFT", "Hat-RIGHT", "A / Circle / C-RIGHT / XBox-B",
+    "B / Cross / C-DOWN / XBox-A", "START", "SELECT / N64-Z-Trigger", "L1 / Saturn-Z / N64-B", "R1 / Saturn-C / N64-A", "X / Triangle / C-UP / XBox-Y",
+    "Y / Square / C-LEFT / XBox-X", "L2 / Saturn-L / N64-L", "R2 / Saturn-R / N64-R",
+    "Left Analog-UP", "Left Analog-LEFT", "Right Analog-UP", "Right Analog-LEFT", "L3 (Left Analog Button)", "R3 (Right Analog Button)"  };
 static const char* inputIcon[inputCount] = { ":/help/dpad_up.svg", ":/help/dpad_down.svg", ":/help/dpad_left.svg", ":/help/dpad_right.svg", 
-											":/help/button_a.svg", ":/help/button_b.svg", ":/help/button_start.svg", ":/help/button_select.svg", 
-											":/help/button_l.svg", ":/help/button_r.svg" };
+											":/help/button_east.svg", ":/help/button_south.svg", ":/help/button_start.svg", ":/help/button_select.svg", 
+											":/help/button_l.svg", ":/help/button_r.svg", ":/help/button_north.svg", ":/help/button_west.svg",
+                                            ":/help/button_l2.svg", ":/help/button_r2.svg",
+                                            ":/help/analog_up.svg", ":/help/analog_left.svg", ":/help/analog_up.svg", ":/help/analog_left.svg",
+                                            ":/help/analog.svg", ":/help/analog.svg" };
 
 //MasterVolUp and MasterVolDown are also hooked up, but do not appear on this screen.
 //If you want, you can manually add them to es_input.cfg.
 
 using namespace Eigen;
 
-#define HOLD_TO_SKIP_MS 5000
+#define HOLD_TO_SKIP_MS 1000
 
 GuiInputConfig::GuiInputConfig(Window* window, InputConfig* target, bool reconfigureAll, const std::function<void()>& okCallback) : GuiComponent(window), 
 	mBackground(window, ":/frame.png"), mGrid(window, Vector2i(1, 7)), 
@@ -244,9 +252,9 @@ void GuiInputConfig::setAssignedTo(const std::shared_ptr<TextComponent>& text, I
 	text->setColor(0x777777FF);
 }
 
-void GuiInputConfig::error(const std::shared_ptr<TextComponent>& text, const std::string& msg)
+void GuiInputConfig::error(const std::shared_ptr<TextComponent>& text, const std::string& msg, int inputId)
 {
-	text->setText("ALREADY TAKEN");
+	text->setText(inputSkippable[inputId] ? "ALREADY TAKEN. HOLD TO JUMP." : "ALREADY TAKEN");
 	text->setColor(0x656565FF);
 }
 
@@ -258,7 +266,7 @@ bool GuiInputConfig::assign(Input input, int inputId)
 	// (if it's the same as what it was before, allow it)
 	if(mTargetConfig->getMappedTo(input).size() > 0 && !mTargetConfig->isMappedTo(inputName[inputId], input))
 	{
-		error(mMappings.at(inputId), "Already mapped!");
+		error(mMappings.at(inputId), "Already mapped!", inputId);
 		return false;
 	}
 

@@ -1,0 +1,5 @@
+# overclock
+arm_freq=2100
+gpu_freq=550
+over_voltage=6
+

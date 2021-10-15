@@ -24,9 +24,14 @@
 #include <Windows.h>
 #endif
 
+#include "bluetooth_scripts.h"
+
 namespace fs = boost::filesystem;
 
 bool scrape_cmdline = false;
+bool system_has_bluetooth = false;
+bool system_has_clear_bt_cache = false;
+bool system_has_reboot_overclock = false;
 
 bool parseArgs(int argc, char* argv[], unsigned int* width, unsigned int* height)
 {
@@ -250,6 +255,20 @@ int main(int argc, char* argv[])
 				SDL_PushEvent(quit);
 			}));
 	}
+
+	// check if system has bluetooth
+	if(setSystemBluetooth() == 0) {
+        system_has_bluetooth = true;
+        if(system("which clear_bt_cache") == 0) {
+            system_has_clear_bt_cache = true;
+        }
+    }
+
+#ifdef AARCH64
+    if(system("which reboot_overclock") == 0) {
+        system_has_reboot_overclock = true;
+    }
+#endif
 
 	//run the command line scraper then quit
 	if(scrape_cmdline)

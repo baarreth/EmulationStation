@@ -3,6 +3,7 @@ project("core")
 set(CORE_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/AsyncHandle.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioManager.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/bluetooth_scripts.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/GuiComponent.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HelpStyle.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HttpReq.h
@@ -61,6 +62,7 @@ set(CORE_HEADERS
 
 set(CORE_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/AudioManager.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/bluetooth_scripts.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/GuiComponent.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HelpStyle.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HttpReq.cpp
@@ -121,24 +123,34 @@ set(EMBEDDED_ASSET_SOURCES
     ${emulationstation-all_SOURCE_DIR}/data/converted/frame_png.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/scroll_gradient_png.cpp
 
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_a_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_b_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_x_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_y_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_l_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_r_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_start_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_button_select_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_up_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_down_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_left_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_right_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_updown_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_leftright_svg.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/help_dpad_all_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_a_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_b_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_x_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_y_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_north_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_south_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_east_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_west_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_l_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_r_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_l2_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_r2_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_start_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__button_select_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__analog_up_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__analog_left_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__analog_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_up_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_down_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_left_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_right_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_updown_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_leftright_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/help__dpad_all_svg.cpp
 
     ${emulationstation-all_SOURCE_DIR}/data/converted/opensans_hebrew_condensed_regular_ttf.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/opensans_hebrew_condensed_light_ttf.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/DejaVuSansMono_ttf.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/arrow_svg.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/option_arrow_svg.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/checkbox_checked_svg.cpp

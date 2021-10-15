@@ -15,7 +15,7 @@ set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
 set_property(CACHE GLSystem PROPERTY STRINGS "Desktop OpenGL" "OpenGL ES")
 
 #-------------------------------------------------------------------------------
-#check if we're running on Raspberry Pi
+#check if we're running on Raspberry Pi OS
 MESSAGE("Looking for bcm_host.h")
 if(EXISTS "/opt/vc/include/bcm_host.h")
     MESSAGE("bcm_host.h found")
@@ -58,6 +58,12 @@ endif()
 #set up compiler flags and excutable names
 if(DEFINED BCMHOST)
     add_definitions(-D_RPI_)
+endif()
+
+if(EXISTS "/usr/local/bin/reboot_overclock")
+    if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "aarch64")
+        add_definitions(-DAARCH64)
+    endif()
 endif()
 
 #-------------------------------------------------------------------------------

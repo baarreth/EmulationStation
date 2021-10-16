@@ -16,6 +16,22 @@ inline void nsleep(double t) {
     }
 }
 
+const char * btErrorMsg[] = {
+    "Success",
+    "Changing state. Try again.",
+    "Tried to connect before paired",
+    "Pairing error",
+    "Trusting error",
+    "Connecting error",
+    "Disconnecting error",
+    "Tmp script error",
+    "Pipe error",
+    "Set error",
+    "Scan error",
+    "Clear cache error",
+    "Remove devices error"
+};
+
 inline int create_tmp_script(const char * fname, const char * data) {
     FILE * fp = fopen(fname, "w");
     if(fp == NULL) return 1;
@@ -36,8 +52,8 @@ int setSystemBluetooth() {
 #else
     const char scriptpath[] = "/tmp/bluetooth_set.sh";
     int c = create_tmp_script(scriptpath, bluetooth_set_sh);
-    if(c) return c;
-    return system(scriptpath);
+    if(c) return BLUETOOTH_TMP_SCRIPT_ERROR;
+    return system(scriptpath) == 0 ? BLUETOOTH_SUCCESS : BLUETOOTH_SET_ERROR;
 #endif
 }
 
@@ -51,9 +67,9 @@ int runBluetoothDevices(std::vector<std::string> & btlist) {
 #else
     const char scriptpath[] = "/tmp/bluetooth_devices.sh";
     int c = create_tmp_script(scriptpath, bluetooth_devices_sh);
-    if(c) return c;
+    if(c) return BLUETOOTH_TMP_SCRIPT_ERROR;
     FILE * pipe = popen(scriptpath, "r");
-    if (pipe == NULL) return 1;
+    if (pipe == NULL) return BLUETOOTH_PIPE_SCRIPT_ERROR;
 
     char line[1024];
     while (fgets(line, 1024, pipe)) {
@@ -61,7 +77,7 @@ int runBluetoothDevices(std::vector<std::string> & btlist) {
         btlist.push_back(std::string(line));
     }
     pclose(pipe);
-    return 0;
+    return BLUETOOTH_SUCCESS;
 #endif
 }
 
@@ -75,8 +91,8 @@ int runScanBluetooth() {
 #else
     const char scriptpath[] = "/tmp/bluetooth_scan.sh";
     int c = create_tmp_script(scriptpath, bluetooth_scan_sh);
-    if(c) return c;
-    return system(scriptpath);
+    if(c) return BLUETOOTH_TMP_SCRIPT_ERROR;
+    return system(scriptpath) == 0 ? BLUETOOTH_SUCCESS : BLUETOOTH_SCAN_ERROR;
 #endif
 }
 
@@ -84,7 +100,7 @@ int runClearBluetoothCache() {
 #ifdef WIN32
 	return 1; // do nothing
 #else
-    return system("clear_bt_cache");
+    return system("clear_bt_cache") == 0 ? BLUETOOTH_SUCCESS : BLUETOOTH_CLEAR_CACHE_ERROR;
 #endif
 }
 
@@ -93,28 +109,49 @@ int runBluetoothConnect(const char * c_str) {
 #ifdef WIN32
 	return 1; // do nothing
 #else
-    if(strncmp(&c_str[39], "no", 2) == 0) {             // not connected
-        if(strncmp(&c_str[21], "no", 2) == 0) {         // not paired
+    bool paired =       strncmp(&c_str[21], "no", 2) == 0 ? false : true;
+    bool trusted =      strncmp(&c_str[30], "no", 2) == 0 ? false : true;
+    bool connected =    strncmp(&c_str[39], "no", 2) == 0 ? false : true;
+    if(!paired) {
+        if(connected) {
+            std::string command("bluetoothctl disconnect ");
+            command.append(c_str, 17);
+            int c = system(command.c_str());
+            return c == 0 ? BLUETOOTH_CHANGING_STATE : BLUETOOTH_DISCONNECT_ERROR;
+        } else {
             std::string command("bluetoothctl pair ");
             command.append(c_str, 17);
-            if(system(command.c_str()) != 0) return 1;  // pairing fail
-            nsleep(0.5);                                // pairing success, wait
+            int c = system(command.c_str());
+            nsleep(1.25);                               // wait before return
+            if(c != 0) return BLUETOOTH_PAIR_ERROR;
         }
-        if(strncmp(&c_str[30], "no", 2) == 0) {         // not trusted
-            std::string command("bluetoothctl trust "); 
-            command.append(c_str, 17);
-            if(system(command.c_str()) != 0) return 2;  // trusting fail
-            nsleep(0.25);                               // wait
-        }
-        std::string command("bluetoothctl connect ");
+    }
+    if(!trusted) {
+        std::string command("bluetoothctl trust ");
         command.append(c_str, 17);
-        if(system(command.c_str()) != 0) return 3;      // connecting fail
+        int c = system(command.c_str());
+        if(c != 0) return BLUETOOTH_TRUST_ERROR;
+    }
+    if(!connected) {
+        std::string command("bluetoothctl info ");
+        command.append(c_str, 17);
+        command.append(" | grep Paired | grep yes");
+        int c = system(command.c_str());
+        if(c != 0) return BLUETOOTH_NOT_PAIRED_YET;
+
+        command = "bluetoothctl connect ";
+        command.append(c_str, 17);
+        c = system(command.c_str());
+        nsleep(1.25);                               // wait before return
+        if(c != 0) return BLUETOOTH_CONNECT_ERROR;
     } else {
         std::string command("bluetoothctl disconnect ");
         command.append(c_str, 17);
-        if(system(command.c_str()) != 0) return 4;
+        int c = system(command.c_str());
+        nsleep(0.75);                               // wait before return
+        if(c != 0) return BLUETOOTH_DISCONNECT_ERROR;
     }
-	return 0;
+    return BLUETOOTH_SUCCESS;
 #endif
 }
 
@@ -128,7 +165,7 @@ int runBluetoothRemove() {
 #else
     const char scriptpath[] = "/tmp/bluetooth_remove.sh";
     int c = create_tmp_script(scriptpath, bluetooth_remove_sh);
-    if(c) return c;
-    return system(scriptpath);
+    if(c) return BLUETOOTH_TMP_SCRIPT_ERROR;
+    return system(scriptpath) == 0 ? BLUETOOTH_SUCCESS : BLUETOOTH_REMOVE_ERROR;
 #endif
 }

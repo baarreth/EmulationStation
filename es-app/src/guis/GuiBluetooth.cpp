@@ -10,13 +10,16 @@ void GuiBluetoothConnectDevice(Window * window, const std::string & st, GuiSetti
     window->pushGui(new GuiMsgBox(window, connected ? "REALLY TRY DISCONNECT?" : "REALLY TRY CONNECT?", "YES", 
     [window, st, gs, connected] { 
         int c = runBluetoothConnect(st.c_str());
-        window->removeGui(gs);
-        GuiBluetoothListDevices(window);
+        window->removeGui(gs);      // remove the outdated table
         if(c != 0) {
-            LOG(LogWarning) << "Bluetooth connect with non-zero result!";
-            window->pushGui(new GuiMsgBox(window, connected ? "DISCONNECT FAIL" : "CONNECT FAIL", "OK"));
+            LOG(LogWarning) << "Bluetooth connect with non-zero result! " << btErrorMsg[c];
+//             it is pretty aggressive to remove all scanned devices just because we had a connection error
+//             if(runBluetoothRemove() != 0)
+//                 LOG(LogWarning) << "Bluetooth remove devices terminated with non-zero result!";
+            window->pushGui(new GuiMsgBox(window, btErrorMsg[c], "OK"));
         } else {
-            window->pushGui(new GuiMsgBox(window, connected ? "DISCONNECT SUCCESS" : "CONNECT SUCCESS", "OK"));
+            GuiBluetoothListDevices(window);
+            window->pushGui(new GuiMsgBox(window, "SUCCESS", "OK"));
         }
     }, "NO", nullptr));
 }

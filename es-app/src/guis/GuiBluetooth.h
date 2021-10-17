@@ -5,3 +5,4 @@ void GuiBluetoothListDevices(Window * window);
 void GuiBluetoothScanDevices(Window * window);
 void GuiBluetoothRemoveDevices(Window * window);
 void GuiBluetoothClearCache(Window * window);
+void GuiBluetoothHelp(Window * window);

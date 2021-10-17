@@ -202,6 +202,11 @@ GuiMenu::GuiMenu(Window* window) : GuiComponent(window), mMenu(window, "MAIN MEN
                     s->addRow(row);
                 }
 
+                row.elements.clear();
+                row.makeAcceptInputHandler([window] { GuiBluetoothHelp(window); });
+                row.addElement(std::make_shared<TextComponent>(window, "HELP ME", Font::get(FONT_SIZE_MEDIUM), 0x777777FF), true);
+                s->addRow(row);
+
                 mWindow->pushGui(s);
         });
     }

@@ -142,7 +142,7 @@ int runBluetoothConnect(const char * c_str) {
         command = "bluetoothctl connect ";
         command.append(c_str, 17);
         c = system(command.c_str());
-        nsleep(1.25);                               // wait before return
+//         nsleep(0.25);                               // bluetoothctl already has a delay after connecting
         if(c != 0) return BLUETOOTH_CONNECT_ERROR;
     } else {
         std::string command("bluetoothctl disconnect ");

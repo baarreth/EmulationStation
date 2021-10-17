@@ -45,7 +45,7 @@ void Settings::setDefaults()
 	mBoolMap["ShowExit"] = true;
 	mBoolMap["Windowed"] = false;
 
-#ifdef _RPI_
+#if defined(_RPI_) || defined(AARCH64)
 	// don't enable VSync by default on the Pi, since it already 
 	// has trouble trying to render things at 60fps in certain menus
 	mBoolMap["VSync"] = false;

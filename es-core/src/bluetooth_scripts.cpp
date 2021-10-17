@@ -3,18 +3,7 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 
-#include <time.h>
-// this is not a good idea, but we have to do it
-inline void nsleep(double t) {
-    if (t > 0) {
-        int s = int(t);
-        double r = t - s;
-        struct timespec req, rem;
-        req.tv_sec = time_t(s);
-        req.tv_nsec = long(r * 1e9);
-        nanosleep(&req, &rem);
-    }
-}
+#include <SDL.h>
 
 const char * btErrorMsg[] = {
     "Success",
@@ -33,7 +22,7 @@ const char * btErrorMsg[] = {
 };
 
 inline int create_tmp_script(const char * fname, const char * data) {
-    FILE * fp = fopen(fname, "w");
+    FILE * fp = fopen(fname, "w");      // it does not check if the file already exists
     if(fp == NULL) return 1;
     size_t len = strlen(data);
     if(fwrite(data, sizeof(char), len, fp) != len) return 2;
@@ -122,7 +111,7 @@ int runBluetoothConnect(const char * c_str) {
             std::string command("bluetoothctl pair ");
             command.append(c_str, 17);
             int c = system(command.c_str());
-            nsleep(1.25);                               // wait before return
+            SDL_Delay(1250);                               // wait before return
             if(c != 0) return BLUETOOTH_PAIR_ERROR;
         }
     }
@@ -142,13 +131,13 @@ int runBluetoothConnect(const char * c_str) {
         command = "bluetoothctl connect ";
         command.append(c_str, 17);
         c = system(command.c_str());
-//         nsleep(0.25);                               // bluetoothctl already has a delay after connecting
+//         SDL_Delay(250);                               // bluetoothctl already has a delay after connecting
         if(c != 0) return BLUETOOTH_CONNECT_ERROR;
     } else {
         std::string command("bluetoothctl disconnect ");
         command.append(c_str, 17);
         int c = system(command.c_str());
-        nsleep(0.75);                               // wait before return
+        SDL_Delay(750);                               // wait before return
         if(c != 0) return BLUETOOTH_DISCONNECT_ERROR;
     }
     return BLUETOOTH_SUCCESS;

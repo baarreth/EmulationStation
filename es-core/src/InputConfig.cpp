@@ -49,7 +49,8 @@ std::string toLower(std::string str)
 }
 //end util functions
 
-InputConfig::InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID) : mDeviceId(deviceId), mDeviceName(deviceName), mDeviceGUID(deviceGUID)
+InputConfig::InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID) : mDeviceId(deviceId), mDeviceName(deviceName),
+    mDeviceGUID(deviceGUID), mDeviceModel("Generic")
 {
 }
 
@@ -186,6 +187,7 @@ void InputConfig::writeToXML(pugi::xml_node parent)
 	}
 
 	cfg.append_attribute("deviceGUID") = mDeviceGUID.c_str();
+    cfg.append_attribute("deviceModel") = mDeviceModel.c_str();
 
 	typedef std::map<std::string, Input>::iterator it_type;
 	for(it_type iterator = mNameMap.begin(); iterator != mNameMap.end(); iterator++)

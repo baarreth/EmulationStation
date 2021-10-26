@@ -104,6 +104,8 @@ public:
 
 	bool isConfigured();
 
+    void setDeviceModel(const std::string & s) { mDeviceModel = s; }
+    
 private:
 	// Returns true if there is an Input mapped to this name, false otherwise.
 	// Writes Input mapped to this name to result if true.
@@ -113,6 +115,7 @@ private:
 	const int mDeviceId;
 	const std::string mDeviceName;
 	const std::string mDeviceGUID;
+    std::string mDeviceModel;
 };
 
 #endif

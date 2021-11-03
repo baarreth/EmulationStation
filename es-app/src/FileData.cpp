@@ -126,7 +126,7 @@ void FileData::removeChild(FileData* file)
 
 void FileData::sort(ComparisonFunction& comparator, bool ascending)
 {
-	std::sort(mChildren.begin(), mChildren.end(), comparator);
+	std::stable_sort(mChildren.begin(), mChildren.end(), comparator);
 
 	for(auto it = mChildren.begin(); it != mChildren.end(); it++)
 	{

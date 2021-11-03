@@ -13,7 +13,13 @@ namespace FileSorts
 		FileData::SortType(&compareTimesPlayed, false, "times played, descending"),
 
 		FileData::SortType(&compareLastPlayed, true, "last played, ascending"),
-		FileData::SortType(&compareLastPlayed, false, "last played, descending")
+		FileData::SortType(&compareLastPlayed, false, "last played, descending"),
+
+        FileData::SortType(&compareGenre, true, "genre, ascending"),
+        FileData::SortType(&compareGenre, false, "genre, descending"),
+
+        FileData::SortType(&compareReleaseDate, true, "release date, ascending"),
+        FileData::SortType(&compareReleaseDate, false, "release date, descending")
 	};
 
 	const std::vector<FileData::SortType> SortTypes(typesArr, typesArr + sizeof(typesArr)/sizeof(typesArr[0]));
@@ -69,4 +75,24 @@ namespace FileSorts
 
 		return false;
 	}
+
+    bool compareGenre(const FileData* file1, const FileData* file2)
+    {
+        if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
+        {
+            return (file1)->metadata.get("genre").compare( (file2)->metadata.get("genre") ) < 0;
+        }
+
+        return false;
+    }
+
+    bool compareReleaseDate(const FileData* file1, const FileData* file2)
+    {
+        if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
+        {
+            return (file1)->metadata.getTime("releasedate") < (file2)->metadata.getTime("releasedate");
+        }
+
+        return false;
+    }
 };

@@ -45,7 +45,9 @@ SystemData::SystemData(const std::string& name, const std::string& fullName, con
 	if(!Settings::getInstance()->getBool("IgnoreGamelist"))
 		parseGamelist(this);
 
-	mRootFolder->sort(FileSorts::SortTypes.at(0));
+	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYNAME));
+	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYRELEASEDATE));
+	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYGENRE));
 
 	loadTheme();
 }

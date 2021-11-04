@@ -194,10 +194,10 @@ std::string DateTimeComponent::getDisplayString(DisplayMode mode) const
 	switch(mode)
 	{
 	case DISP_DATE:
-		fmt = "%m/%d/%Y";
+		fmt = "%Y-%b";
 		break;
 	case DISP_DATE_TIME:
-		fmt = "%m/%d/%Y %H:%M:%S";
+		fmt = "%Y-%b-%d %H:%M:%S";
 		break;
 	case DISP_RELATIVE_TO_NOW:
 		{

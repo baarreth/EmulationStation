@@ -90,7 +90,8 @@ namespace FileSorts
     {
         if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
         {
-            return (file1)->metadata.getTime("releasedate") < (file2)->metadata.getTime("releasedate");
+            // compare only year and month
+            return (file1)->metadata.get("releasedate").compare(0, 6, (file2)->metadata.get("releasedate") ) < 0;
         }
 
         return false;

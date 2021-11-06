@@ -10,6 +10,8 @@ MetaDataDecl gameDecls[] = {
 	{"name",		MD_STRING,				"", 				false,		"name",					"enter game name"}, 
 	{"desc",		MD_MULTILINE_STRING,	"", 				false,		"description",			"enter description"},
 	{"image",		MD_IMAGE_PATH,			"", 				false,		"image",				"enter path to image"},
+	{"cover",		MD_IMAGE_PATH,			"", 				false,		"cover",				"enter path to cover"},
+	{"backcover",	MD_IMAGE_PATH,			"", 				false,		"back cover",			"enter path to back cover"},
 	{"thumbnail",	MD_IMAGE_PATH,			"", 				false,		"thumbnail",			"enter path to thumbnail"},
 	{"rating",		MD_RATING,				"0.000000", 		false,		"rating",				"enter rating"},
 	{"releasedate", MD_DATE,				"not-a-date-time", 	false,		"release date",			"enter release date"},
@@ -47,7 +49,7 @@ const std::vector<MetaDataDecl>& getMDDByType(MetaDataListType type)
 
 
 MetaDataList::MetaDataList(MetaDataListType type)
-	: mType(type)
+	: mType(type), imageIndex(0)
 {
 	const std::vector<MetaDataDecl>& mdd = getMDD();
 	for(auto iter = mdd.begin(); iter != mdd.end(); iter++)
@@ -118,6 +120,30 @@ const std::string& MetaDataList::get(const std::string& key) const
 {
 	return mMap.at(key);
 }
+
+const std::string& MetaDataList::getNextImage(bool nextImage)
+{
+    if (nextImage) imageIndex = (imageIndex+1)%3;
+    switch(imageIndex) {
+        case 1:     // cover
+        {
+            std::string & s = mMap.at("cover");
+            if(s != "") return s;
+            break;
+        }
+        case 2:     // backcover
+        {
+            std::string & s = mMap.at("backcover");
+            if(s != "") return s;
+            break;
+        }
+        case 0:     // image
+        default:
+            break;
+    }
+	return mMap.at("image");
+}
+
 
 int MetaDataList::getInt(const std::string& key) const
 {

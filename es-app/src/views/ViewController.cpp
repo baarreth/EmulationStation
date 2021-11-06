@@ -27,7 +27,8 @@ void ViewController::init(Window* window)
 }
 
 ViewController::ViewController(Window* window)
-	: GuiComponent(window), mCurrentView(nullptr), mCamera(Eigen::Affine3f::Identity()), mFadeOpacity(0), mLockInput(false)
+	: GuiComponent(window), mCurrentView(nullptr), mCamera(Eigen::Affine3f::Identity()), mFadeOpacity(0), mLockInput(false),
+	detailed(false)
 {
 	mState.viewing = NOTHING;
 }
@@ -209,7 +210,7 @@ std::shared_ptr<IGameListView> ViewController::getGameListView(SystemData* syste
 	std::shared_ptr<IGameListView> view;
 
 	//decide type
-	bool detailed = false;
+	detailed = false;
 	std::vector<FileData*> files = system->getRootFolder()->getFilesRecursive(GAME | FOLDER);
 	for(auto it = files.begin(); it != files.end(); it++)
 	{
@@ -266,8 +267,11 @@ bool ViewController::input(InputConfig* config, Input input)
 		return true;
 	}
 
-	if(mCurrentView)
-		return mCurrentView->input(config, input);
+	if(mCurrentView) {
+        bool v = mCurrentView->input(config, input);
+        updateHelpPrompts();
+        return v;
+    }
 
 	return false;
 }
@@ -324,7 +328,7 @@ void ViewController::preload()
 	}
 }
 
-void ViewController::reloadGameListView(IGameListView* view, bool reloadTheme)
+void ViewController::reloadGameListView(IGameListView* view, bool reloadTheme, bool changeImage)
 {
 	for(auto it = mGameListViews.begin(); it != mGameListViews.end(); it++)
 	{
@@ -339,6 +343,7 @@ void ViewController::reloadGameListView(IGameListView* view, bool reloadTheme)
 				system->loadTheme();
 
 			std::shared_ptr<IGameListView> newView = getGameListView(system);
+            if(detailed && changeImage) newView->changeImage();    // change image at DetailedGameListView
 			newView->setCursor(cursor);
 
 			if(isCurrent)
@@ -390,6 +395,10 @@ std::vector<HelpPrompt> ViewController::getHelpPrompts()
 	
 	prompts = mCurrentView->getHelpPrompts();
 	prompts.push_back(HelpPrompt("start", "menu"));
+    if(mState.viewing == GAME_LIST && detailed) {
+        std::shared_ptr<IGameListView> view = getGameListView(mState.getSystem());
+        if(view->hasNextImage()) prompts.push_back(HelpPrompt("x", "change image"));
+    } 
 
 	return prompts;
 }

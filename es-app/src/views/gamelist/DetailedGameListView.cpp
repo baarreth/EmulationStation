@@ -12,7 +12,7 @@ DetailedGameListView::DetailedGameListView(Window* window, FileData* root) :
 	mLblGenre(window), mLblPlayers(window), mLblLastPlayed(window), mLblPlayCount(window),
 
 	mRating(window), mReleaseDate(window), mDeveloper(window), mPublisher(window), 
-	mGenre(window), mPlayers(window), mLastPlayed(window), mPlayCount(window)
+	mGenre(window), mPlayers(window), mLastPlayed(window), mPlayCount(window), nextImage(false)
 {
 	//mHeaderImage.setPosition(mSize.x() * 0.25f, 0);
 
@@ -177,10 +177,15 @@ void DetailedGameListView::initMDValues()
 	mDescContainer.setSize(mDescContainer.getSize().x(), mSize.y() - mDescContainer.getPosition().y());
 }
 
+bool DetailedGameListView::hasNextImage() {
+    FileData* file = (mList.size() == 0 || mList.isScrolling()) ? NULL : mList.getSelected();
+    return (file != NULL && file->metadata.get("cover") != "");
+}
+
 void DetailedGameListView::updateInfoPanel()
 {
 	FileData* file = (mList.size() == 0 || mList.isScrolling()) ? NULL : mList.getSelected();
-
+    
 	bool fadingOut;
 	if(file == NULL)
 	{
@@ -188,7 +193,8 @@ void DetailedGameListView::updateInfoPanel()
 		//mDescription.setText("");
 		fadingOut = true;
 	}else{
-		mImage.setImage(file->metadata.get("image"));
+        mImage.setImage(file->metadata.getNextImage(nextImage));
+        nextImage = false;  // make sure it will not change again
 		mDescription.setText(file->metadata.get("desc"));
 		mDescContainer.reset();
 

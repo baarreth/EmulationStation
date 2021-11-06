@@ -24,7 +24,9 @@ private:
 	void initMDValues();
 
 	ImageComponent mImage;
-
+    void changeImage() override { nextImage = true; }
+	bool hasNextImage() override;
+    
 	TextComponent mLblRating, mLblReleaseDate, mLblDeveloper, mLblPublisher, mLblGenre, mLblPlayers, mLblLastPlayed, mLblPlayCount;
 
 	RatingComponent mRating;
@@ -41,4 +43,5 @@ private:
 
 	ScrollableContainer mDescContainer;
 	TextComponent mDescription;
+    bool nextImage;
 };

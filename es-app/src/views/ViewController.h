@@ -20,7 +20,7 @@ public:
 
 	// If a basic view detected a metadata change, it can request to recreate
 	// the current gamelist view (as it may change to be detailed).
-	void reloadGameListView(IGameListView* gamelist, bool reloadTheme = false);
+	void reloadGameListView(IGameListView* gamelist, bool reloadTheme = false, bool changeImage = false);
 	inline void reloadGameListView(SystemData* system, bool reloadTheme = false) { reloadGameListView(getGameListView(system).get(), reloadTheme); }
 	void reloadAll(); // Reload everything with a theme.  Used when the "ThemeSet" setting changes.
 
@@ -84,4 +84,5 @@ private:
 	bool mLockInput;
 
 	State mState;
+    bool detailed;
 };

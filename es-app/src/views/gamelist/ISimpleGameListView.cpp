@@ -102,7 +102,13 @@ bool ISimpleGameListView::input(InputConfig* config, Input input)
 				ViewController::get()->goToPrevGameList();
 				return true;
 			}
-		}
+		} else if(config->isMappedTo("x", input)) {
+            FileData* cursor = getCursor();
+            if(cursor->getType() == GAME)
+            {
+                ViewController::get()->reloadGameListView(this, false, true);
+            }
+        }
 	}
 
 	return IGameListView::input(config, input);

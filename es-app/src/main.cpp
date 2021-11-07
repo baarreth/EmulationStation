@@ -99,6 +99,7 @@ bool parseArgs(int argc, char* argv[], unsigned int* width, unsigned int* height
 				"--resolution [width] [height]	try and force a particular resolution\n"
 				"--gamelist-only			skip automatic game search, only read from gamelist.xml\n"
 				"--ignore-gamelist		ignore the gamelist (useful for troubleshooting)\n"
+                "--sort-gamelist [inrtlgdy]	- define a custom gamelist initial sorting\n"
 				"--draw-framerate		display the framerate\n"
 				"--no-exit			don't show the exit option in the menu\n"
 				"--debug				more logging, show console on Windows\n"

@@ -63,7 +63,7 @@ public:
 			: comparisonFunction(sortFunction), ascending(sortAscending), description(sortDescription) {}
 	};
 
-	void sort(ComparisonFunction& comparator, bool ascending = true);
+	void sort(ComparisonFunction& comparator/*, bool ascending = true*/);
 	void sort(const SortType& type);
 
 	MetaDataList metadata;

@@ -4,22 +4,25 @@ namespace FileSorts
 {
 	const FileData::SortType typesArr[] = {
 		FileData::SortType(&compareFileName, true, "filename, ascending"),
-		FileData::SortType(&compareFileName, false, "filename, descending"),
+		FileData::SortType(&compareFileNameInv, false, "filename, descending"),
 
 		FileData::SortType(&compareRating, true, "rating, ascending"),
-		FileData::SortType(&compareRating, false, "rating, descending"),
+		FileData::SortType(&compareRatingInv, false, "rating, descending"),
 
 		FileData::SortType(&compareTimesPlayed, true, "times played, ascending"),
-		FileData::SortType(&compareTimesPlayed, false, "times played, descending"),
+		FileData::SortType(&compareTimesPlayedInv, false, "times played, descending"),
 
 		FileData::SortType(&compareLastPlayed, true, "last played, ascending"),
-		FileData::SortType(&compareLastPlayed, false, "last played, descending"),
+		FileData::SortType(&compareLastPlayedInv, false, "last played, descending"),
 
         FileData::SortType(&compareGenre, true, "genre, ascending"),
-        FileData::SortType(&compareGenre, false, "genre, descending"),
+        FileData::SortType(&compareGenreInv, false, "genre, descending"),
 
         FileData::SortType(&compareReleaseDate, true, "release date, ascending"),
-        FileData::SortType(&compareReleaseDate, false, "release date, descending")
+        FileData::SortType(&compareReleaseDateInv, false, "release date, descending"),
+
+        FileData::SortType(&compareReleaseYear, true, "release year, ascending"),
+        FileData::SortType(&compareReleaseYearInv, false, "release year, descending")
 	};
 
 	const std::vector<FileData::SortType> SortTypes(typesArr, typesArr + sizeof(typesArr)/sizeof(typesArr[0]));
@@ -39,6 +42,10 @@ namespace FileSorts
         return name1.length() < name2.length();
 	}
 
+    bool compareFileNameInv(const FileData* file1, const FileData* file2) {
+        return compareFileName(file2, file1);
+    }
+
 	bool compareRating(const FileData* file1, const FileData* file2)
 	{
 		//only games have rating metadata
@@ -48,6 +55,10 @@ namespace FileSorts
 		}
 		return false;
 	}
+
+    bool compareRatingInv(const FileData* file1, const FileData* file2) {
+        return compareRating(file2, file1);
+    }
 
 	bool compareTimesPlayed(const FileData* file1, const FileData* file2)
 	{
@@ -59,6 +70,10 @@ namespace FileSorts
 		return false;
 	}
 
+    bool compareTimesPlayedInv(const FileData* file1, const FileData* file2) {
+        return compareTimesPlayed(file2, file1);
+    }
+
 	bool compareLastPlayed(const FileData* file1, const FileData* file2)
 	{
 		//only games have lastplayed metadata
@@ -68,6 +83,10 @@ namespace FileSorts
 		}
 		return false;
 	}
+
+    bool compareLastPlayedInv(const FileData* file1, const FileData* file2) {
+        return compareLastPlayed(file2, file1);
+    }
 
     inline bool compareStrings(const std::string & s1, const std::string & s2, unsigned int count = 0) {
         if(!count) count = s1.length() > s2.length() ? s2.length() : s1.length();
@@ -85,6 +104,10 @@ namespace FileSorts
         return false;
     }
 
+    bool compareGenreInv(const FileData* file1, const FileData* file2) {
+        return compareGenre(file2, file1);
+    }
+
     bool compareReleaseDate(const FileData* file1, const FileData* file2)
     {
         if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
@@ -93,4 +116,22 @@ namespace FileSorts
         }
         return false;
     }
+
+    bool compareReleaseDateInv(const FileData* file1, const FileData* file2) {
+        return compareReleaseDate(file2, file1);
+    }
+
+    bool compareReleaseYear(const FileData* file1, const FileData* file2)
+    {
+        if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
+        {
+            return compareStrings((file1)->metadata.get("releasedate"), (file2)->metadata.get("releasedate"), 4);
+        }
+        return false;
+    }
+
+    bool compareReleaseYearInv(const FileData* file1, const FileData* file2) {
+        return compareReleaseYear(file2, file1);
+    }
+
 };

@@ -124,21 +124,18 @@ void FileData::removeChild(FileData* file)
 	assert(false);
 }
 
-void FileData::sort(ComparisonFunction& comparator, bool ascending)
+void FileData::sort(ComparisonFunction& comparator)
 {
 	std::stable_sort(mChildren.begin(), mChildren.end(), comparator);
 
 	for(auto it = mChildren.begin(); it != mChildren.end(); it++)
 	{
 		if((*it)->getChildren().size() > 0)
-			(*it)->sort(comparator, ascending);
+			(*it)->sort(comparator);
 	}
-
-	if(!ascending)
-		std::reverse(mChildren.begin(), mChildren.end());
 }
 
 void FileData::sort(const SortType& type)
 {
-	sort(*type.comparisonFunction, type.ascending);
+	sort(*type.comparisonFunction);
 }

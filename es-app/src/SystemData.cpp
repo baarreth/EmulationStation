@@ -69,6 +69,9 @@ SystemData::SystemData(const std::string& name, const std::string& fullName, con
                 case 'g':
                     mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYGENREINV:SORTBYGENRE));
                     break;
+                case 'y':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYRELEASEYEARINV:SORTBYRELEASEYEAR));
+                    break;
                 default:
                     LOG(LogError) << "Unexpected sort-gamelist option: " << *a;
                     break;

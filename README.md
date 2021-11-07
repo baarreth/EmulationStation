@@ -13,7 +13,7 @@ I am working on this outdated version because I haven't adapt to [retroarch](htt
 - Verify controllers by deviceGUID and deviceName at the same time
 - Tool to reboot in overclock in Raspberry Pi 4B
 - Reboot/Shutdown without sudo
-- Press X to cycle between image, cover and back cover in the detailed view
+- Press X to cycle image, cover and back cover in the detailed view
 - Menu option to sort gamelists by genre and release date
 - Command option to define a initial sorting sequence
 

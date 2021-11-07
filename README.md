@@ -13,6 +13,9 @@ I am working on this outdated version because I haven't adapt to [retroarch](htt
 - Verify controllers by deviceGUID and deviceName at the same time
 - Tool to reboot in overclock in Raspberry Pi 4B
 - Reboot/Shutdown without sudo
+- Press X to cycle between image, cover and back cover in the detailed view
+- Menu option to sort gamelists by genre and release date
+- Command option to define a initial sorting sequence
 
 # TODO
 
@@ -104,6 +107,7 @@ You can use `--help` or `-h` to view a list of command-line options. Briefly out
 --resolution [width] [height]	- try and force a particular resolution
 --gamelist-only		- only display games defined in a gamelist.xml file.
 --ignore-gamelist	- do not parse any gamelist.xml files.
+--sort-gamelist [inrtlgd]	- define a custom gamelist initial sorting* 
 --draw-framerate	- draw the framerate.
 --no-exit		- do not display 'exit' in the ES menu.
 --debug			- show the console window on Windows, do slightly more logging
@@ -111,6 +115,10 @@ You can use `--help` or `-h` to view a list of command-line options. Briefly out
 --vsync [1/on or 0/off]	- turn vsync on or off (default is on).
 --scrape	- run the interactive command-line metadata scraper.
 ```
+
+**Sorting options**: `n` for name, `r` for rating, `t` for times played, `l` for last played, `g` for genre, and `d` for release date.
+You can put `i` before the letter to inverse sort, and can use a sequence of letters to apply a sequence of sorts (the sorting algorithm is stable).
+For example, `--sort-gamelist ndg` will sort by name, then by release date (year/month), and then by genre, while `--sort-gamelist inidig` will do the same but in the inverse order for each sort.
 
 As long as ES hasn't frozen, you can always press F4 to close the application.
 

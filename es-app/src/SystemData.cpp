@@ -45,9 +45,37 @@ SystemData::SystemData(const std::string& name, const std::string& fullName, con
 	if(!Settings::getInstance()->getBool("IgnoreGamelist"))
 		parseGamelist(this);
 
-	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYNAME));
-	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYRELEASEDATE));
-	mRootFolder->sort(FileSorts::SortTypes.at(SORTBYGENRE));
+    const std::string sortString = Settings::getInstance()->getString("SortGameList");
+    bool inverse = false;
+    for(auto a = sortString.begin(); a != sortString.end(); a++) {
+        if(*a == 'i') inverse = true;   // set inverse flag for the next iteration
+        else {
+            switch(tolower(*a)) {
+                case 'n':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYNAMEINV:SORTBYNAME));
+                    break;
+                case 'r':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYRATINGINV:SORTBYRATING));
+                    break;
+                case 't':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYTIMESPLAYEDINV:SORTBYTIMESPLAYED));
+                    break;
+                case 'l':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYLASTPLAYEDINV:SORTBYLASTPLAYED));
+                    break;
+                case 'd':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYRELEASEDATEINV:SORTBYRELEASEDATE));
+                    break;
+                case 'g':
+                    mRootFolder->sort(FileSorts::SortTypes.at(inverse?SORTBYGENREINV:SORTBYGENRE));
+                    break;
+                default:
+                    LOG(LogError) << "Unexpected sort-gamelist option: " << *a;
+                    break;
+            }
+            inverse = false;    // reset flag for the next iteration
+        }
+    }
 
 	loadTheme();
 }

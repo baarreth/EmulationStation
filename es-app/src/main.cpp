@@ -54,7 +54,12 @@ bool parseArgs(int argc, char* argv[], unsigned int* width, unsigned int* height
 		}else if(strcmp(argv[i], "--ignore-gamelist") == 0)
 		{
 			Settings::getInstance()->setBool("IgnoreGamelist", true);
-		}else if(strcmp(argv[i], "--draw-framerate") == 0)
+		}
+        else if(strcmp(argv[i], "--sort-gamelist") == 0) {
+            Settings::getInstance()->setString("SortGameList", std::string(argv[i + 1]));
+            i++;    // skip sort value
+        }
+		else if(strcmp(argv[i], "--draw-framerate") == 0)
 		{
 			Settings::getInstance()->setBool("DrawFramerate", true);
 		}else if(strcmp(argv[i], "--no-exit") == 0)

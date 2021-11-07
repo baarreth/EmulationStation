@@ -27,20 +27,16 @@ namespace FileSorts
 	//returns if file1 should come before file2
 	bool compareFileName(const FileData* file1, const FileData* file2)
 	{
-		std::string name1 = file1->getName();
-		std::string name2 = file2->getName();
-
-		//min of name1/name2 .length()s
-		unsigned int count = name1.length() > name2.length() ? name2.length() : name1.length();
-		for(unsigned int i = 0; i < count; i++)
-		{
-			if(toupper(name1[i]) != toupper(name2[i]))
-			{
-				return toupper(name1[i]) < toupper(name2[i]);
-			}
-		}
-
-		return name1.length() < name2.length();
+        const std::string & name1 = file1->getName();
+        const std::string & name2 = file2->getName();
+        unsigned int count = name1.length() > name2.length() ? name2.length() : name1.length();
+        auto n1 = name1.begin();
+        auto n2 = name2.begin();
+        for(unsigned int i = 0; i < count; i++, n1++, n2++)
+        {
+            if(tolower(*n1) != tolower(*n2)) return tolower(*n1) < tolower(*n2);
+        }
+        return name1.length() < name2.length();
 	}
 
 	bool compareRating(const FileData* file1, const FileData* file2)
@@ -50,7 +46,6 @@ namespace FileSorts
 		{
 			return file1->metadata.getFloat("rating") < file2->metadata.getFloat("rating");
 		}
-
 		return false;
 	}
 
@@ -61,7 +56,6 @@ namespace FileSorts
 		{
 			return (file1)->metadata.getInt("playcount") < (file2)->metadata.getInt("playcount");
 		}
-
 		return false;
 	}
 
@@ -72,17 +66,22 @@ namespace FileSorts
 		{
 			return (file1)->metadata.getTime("lastplayed") < (file2)->metadata.getTime("lastplayed");
 		}
-
 		return false;
 	}
+
+    inline bool compareStrings(const std::string & s1, const std::string & s2, unsigned int count = 0) {
+        if(!count) count = s1.length() > s2.length() ? s2.length() : s1.length();
+        auto n1 = s1.begin(), n2 = s2.begin();
+        for(unsigned int i = 0; i < count; i++, n1++, n2++) if(*n1 != *n2) return *n1 < *n2;
+        return s1.length() < s2.length();
+    }
 
     bool compareGenre(const FileData* file1, const FileData* file2)
     {
         if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
         {
-            return (file1)->metadata.get("genre").compare( (file2)->metadata.get("genre") ) < 0;
+            return compareStrings((file1)->metadata.get("genre"), (file2)->metadata.get("genre"));
         }
-
         return false;
     }
 
@@ -90,10 +89,8 @@ namespace FileSorts
     {
         if(file1->metadata.getType() == GAME_METADATA && file2->metadata.getType() == GAME_METADATA)
         {
-            // compare only year and month
-            return (file1)->metadata.get("releasedate").compare(0, 6, (file2)->metadata.get("releasedate") ) < 0;
+            return compareStrings((file1)->metadata.get("releasedate"), (file2)->metadata.get("releasedate"), 6);
         }
-
         return false;
     }
 };

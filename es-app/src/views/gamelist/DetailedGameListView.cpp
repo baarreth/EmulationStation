@@ -179,7 +179,7 @@ void DetailedGameListView::initMDValues()
 
 bool DetailedGameListView::hasNextImage() {
     FileData* file = (mList.size() == 0 || mList.isScrolling()) ? NULL : mList.getSelected();
-    return (file != NULL && file->getType() == GAME && file->metadata.get("cover") != "");
+    return (file != NULL && file->getType() == GAME && file->metadata.imageListSize() > 1);
 }
 
 void DetailedGameListView::updateInfoPanel()

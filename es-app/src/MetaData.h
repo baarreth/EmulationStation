@@ -60,9 +60,11 @@ public:
 	inline const std::vector<MetaDataDecl>& getMDD() const { return getMDDByType(getType()); }
 
 	const std::string& getNextImage(bool nextImage);
-
+    void setDetailedGameListImages();
+    size_t imageListSize() { return imageList.size(); }
 private:
 	MetaDataListType mType;
 	std::map<std::string, std::string> mMap;
+    std::vector<std::string *> imageList;
     int imageIndex;
 };

@@ -5,6 +5,8 @@
 
 namespace fs = boost::filesystem;
 
+const char * DetailedGameImages[] = { "image", "cover", "backcover", "\0" };
+
 MetaDataDecl gameDecls[] = { 
 	// key,			type,					default,			statistic,	name in GuiMetaDataEd,	prompt in GuiMetaDataEd
 	{"name",		MD_STRING,				"", 				false,		"name",					"enter game name"}, 
@@ -49,7 +51,7 @@ const std::vector<MetaDataDecl>& getMDDByType(MetaDataListType type)
 
 
 MetaDataList::MetaDataList(MetaDataListType type)
-	: mType(type), imageIndex(0)
+	: mType(type), imageList(), imageIndex(-1)
 {
 	const std::vector<MetaDataDecl>& mdd = getMDD();
 	for(auto iter = mdd.begin(); iter != mdd.end(); iter++)
@@ -121,27 +123,22 @@ const std::string& MetaDataList::get(const std::string& key) const
 	return mMap.at(key);
 }
 
+void MetaDataList::setDetailedGameListImages() {
+    if( !imageList.empty() ) imageList.clear();
+    for(const char ** c = DetailedGameImages; **c != '\0'; c++) {
+        std::string & s = mMap.at(*c);
+        if(s != "") imageList.push_back(&s);
+    }
+} 
+
 const std::string& MetaDataList::getNextImage(bool nextImage)
 {
-    if (nextImage) imageIndex = (imageIndex+1)%3;
-    switch(imageIndex) {
-        case 1:     // cover
-        {
-            std::string & s = mMap.at("cover");
-            if(s != "") return s;
-            break;
-        }
-        case 2:     // backcover
-        {
-            std::string & s = mMap.at("backcover");
-            if(s != "") return s;
-            break;
-        }
-        case 0:     // image
-        default:
-            break;
+    if(!imageList.empty()) {
+        if(imageIndex < 0) imageIndex = 0;
+        if(nextImage) imageIndex = (imageIndex+1)%imageList.size();
+        return *(imageList[imageIndex]);
     }
-	return mMap.at("image");
+    return mMap.at("image");
 }
 
 

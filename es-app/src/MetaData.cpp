@@ -51,7 +51,7 @@ const std::vector<MetaDataDecl>& getMDDByType(MetaDataListType type)
 
 
 MetaDataList::MetaDataList(MetaDataListType type)
-	: mType(type), imageList(), imageIndex(-1)
+	: mType(type), imageList(), imageIndex(0)
 {
 	const std::vector<MetaDataDecl>& mdd = getMDD();
 	for(auto iter = mdd.begin(); iter != mdd.end(); iter++)
@@ -134,7 +134,6 @@ void MetaDataList::setDetailedGameListImages() {
 const std::string& MetaDataList::getNextImage(bool nextImage)
 {
     if(!imageList.empty()) {
-        if(imageIndex < 0) imageIndex = 0;
         if(nextImage) imageIndex = (imageIndex+1)%imageList.size();
         return *(imageList[imageIndex]);
     }

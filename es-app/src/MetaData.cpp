@@ -5,15 +5,17 @@
 
 namespace fs = boost::filesystem;
 
-const char * DetailedGameImages[] = { "image", "cover", "backcover", "\0" };
+const char * DetailedGameImages[] = { "image", "fcover", "bcover", "fcover2", "bcover2", "\0" };
 
 MetaDataDecl gameDecls[] = { 
 	// key,			type,					default,			statistic,	name in GuiMetaDataEd,	prompt in GuiMetaDataEd
 	{"name",		MD_STRING,				"", 				false,		"name",					"enter game name"}, 
 	{"desc",		MD_MULTILINE_STRING,	"", 				false,		"description",			"enter description"},
 	{"image",		MD_IMAGE_PATH,			"", 				false,		"image",				"enter path to image"},
-	{"cover",		MD_IMAGE_PATH,			"", 				false,		"cover",				"enter path to cover"},
-	{"backcover",	MD_IMAGE_PATH,			"", 				false,		"back cover",			"enter path to back cover"},
+	{"fcover",		MD_IMAGE_PATH,			"", 				false,		"front cover",			"enter path to front cover"},
+	{"bcover",		MD_IMAGE_PATH,			"", 				false,		"back cover",			"enter path to back cover"},
+	{"fcover2",		MD_IMAGE_PATH,			"", 				false,		"front cover 2",		"enter path to front cover 2"},
+	{"bcover2",		MD_IMAGE_PATH,			"", 				false,		"back cover 2",			"enter path to back cover 2"},
 	{"thumbnail",	MD_IMAGE_PATH,			"", 				false,		"thumbnail",			"enter path to thumbnail"},
 	{"rating",		MD_RATING,				"0.000000", 		false,		"rating",				"enter rating"},
 	{"releasedate", MD_DATE,				"not-a-date-time", 	false,		"release date",			"enter release date"},

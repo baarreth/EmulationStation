@@ -214,7 +214,7 @@ std::shared_ptr<IGameListView> ViewController::getGameListView(SystemData* syste
 	std::vector<FileData*> files = system->getRootFolder()->getFilesRecursive(GAME | FOLDER);
 	for(auto it = files.begin(); it != files.end(); it++)
 	{
-		if(!(*it)->getThumbnailPath().empty())
+		if(!(*it)->getThumbnailPath().empty() || !(*it)->metadata.getNextImage().empty())
 		{
 			detailed = true;
 			break;
